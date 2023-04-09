@@ -1,5 +1,13 @@
-import pygame as pg, sys, random as rm, time, math, iroiro as ir, pickle
+import pygame as pg, sys, random as rm, time, math, iroiro as ir, pickle, pg_custom as m
 pg.init()
+"""
+with open("coin.pickle", mode="wb") as l:
+    pickle.dump(0, l)
+with open("所持自機.pickle", mode="wb") as l:
+    pickle.dump(["なし"], l)
+with open("種類.pickle", mode="wb") as l:
+    pickle.dump("なし", l)
+"""
 apg = pg.image.load("アプリ自機.png")
 pg.display.set_icon(apg)
 screen = pg.display.set_mode((1545, 810))
@@ -108,6 +116,7 @@ shopp = pg.transform.scale(pg.image.load("shop.png"), (132, 54))
 kaberect = pg.image.load("kabe.png")
 kaberect = pg.transform.scale(kaberect, (125, 30))
 f3_p = False
+task = 200
 def fin():
     key = pg.key.get_pressed()
     if key[pg.K_F4]:
@@ -118,9 +127,9 @@ def set(color):
         pickle.dump(color, l)
 def story(key):
     global f3_p, screen
-    pg.mixer.Sound("BGM (1).wav").play(-1)
+    m.mus.start("BGM (1).wav", -1)
     pg.mouse.set_cursor(pg.SYSTEM_CURSOR_ARROW)
-    moji = ["ここは2200年の日本。(左右キーで進む/戻る)", "「ワ―!」「逃げろー!」「UFOの襲来だー!!」", "UFOが攻めてきてパニックの中,", "1人の人間が立ち上がった。", "このロケットを操縦して，UFO達を追撃しよう!", "操作方法...移動 矢印キー", "射撃 スペースキー", "アイテム...流れ星 一定時間無敵，弾速UP", "ダイナマイト 爆発し，その時にある敵の弾をなくす", "救急箱 残機を1増やす", "↑のUFO...弾速 ★☆☆☆☆ 速さ ★☆☆☆☆ 弾威力 ★☆☆☆☆", "↑のUFO...弾速 ★★☆☆☆ 速さ ★★★☆☆ 弾威力 ★★☆☆☆", "↑のUFO...弾速 ★★★☆☆ 速さ ★★★☆☆ 弾威力 ★★★☆☆", "↑のUFO...弾速 ★★★★☆ 速さ ★★★★☆ 弾威力 ★★☆☆☆", "では,,,スタート!"]
+    moji = ["ここは2200年の日本。(左右キーで進む/戻る)", "「ワ―!」「逃げろー!」「UFOの襲来だー!!」", "UFOが攻めてきてパニックの中,", "1人の人間が立ち上がった。", "このロケットを操縦して，UFO達を追撃しよう!", "操作方法...移動 矢印キー", "射撃 スペースキー", "(ロケットを手に入れている場合)壁を作る Vキー", "アイテム...流れ星 一定時間無敵，弾速UP", "ダイナマイト 爆発し，その時にある敵の弾をなくす", "救急箱 残機を1増やす", "↑のUFO...弾速 ★☆☆☆☆ 速さ ★☆☆☆☆ 弾威力 ★☆☆☆☆", "↑のUFO...弾速 ★★☆☆☆ 速さ ★★★☆☆ 弾威力 ★★☆☆☆", "↑のUFO...弾速 ★★★☆☆ 速さ ★★★☆☆ 弾威力 ★★★☆☆", "↑のUFO...弾速 ★★★★☆ 速さ ★★★★☆ 弾威力 ★★☆☆☆", "では,,,スタート!"]
     if key:
         moji = ["移動 矢印キー", "射撃 スペースキー", "start!"]
     b = 0
@@ -148,6 +157,7 @@ def story(key):
         else:
             flag = True
         if b >= len(moji):
+            m.mus.stop()
             return
         if b == 7:
             screen.blit(ngrbosi, pg.Rect(720, 110, 200, 200))
@@ -185,7 +195,8 @@ def hsreset():
     with open('highscore.pickle', mode='wb') as l:
         pickle.dump("1000", l)
 def game(gamecrear_c__gameover_o):
-    global gamecrear, gameover, re, rect, rect2, screen, mx, my, gz, push, f3_p
+    global gamecrear, gameover, re, rect, rect2, screen, mx, my, gz, push, f3_p, task
+    m.mus.stop()
     re = pg.image.load("return!.png")
     re = pg.transform.scale(re, (100, 80))
     rect = pg.Rect(367.5, 0, 0, 0)
@@ -202,6 +213,7 @@ def game(gamecrear_c__gameover_o):
         pg.mixer.Sound("GAMECREAR.wav").play()
     else:
         pg.mixer.Sound("GAMEOVER.wav").play()
+    m.mus.start("待機.wav", -1)
     while True:
         if gamecrear_c__gameover_o == "c":
             screen.fill("ORANGE")
@@ -210,7 +222,7 @@ def game(gamecrear_c__gameover_o):
         else:
             screen.fill("#000250")
             screen.blit(gameover, rect)
-            suuji(30, 30, ("250/"+str(taositakazu)))
+            suuji(30, 30, (str(task)+"/"+str(taositakazu)))
             suuji(1250, 30, (str(int(hour))+":"+str(int(minute))+":"+str(int(second))))
             with open("highscore.pickle", mode="rb") as l:
                 f = pickle.load(l)
@@ -222,6 +234,8 @@ def game(gamecrear_c__gameover_o):
             pg.mouse.set_cursor(pg.SYSTEM_CURSOR_HAND)
             if push[0]:
                 pg.mouse.set_cursor(pg.SYSTEM_CURSOR_ARROW)
+                m.mus.stop()
+                m.mus.start("shootingBGM.wav", -1)
                 return
         else:
             pg.mouse.set_cursor(pg.SYSTEM_CURSOR_ARROW)
@@ -342,6 +356,7 @@ def reset():
     tmk = pg.Rect(rm.randint(0, 1545), rm.randint(-10000, -500), 60, 47)
 def shop():
     global jikan, f3_p, screen
+    m.mus.start("BGM (1).wav", -1)
     aiueo = jikan2-jikan
     wa = (100, 100)
     wb = (20, 20)
@@ -388,6 +403,7 @@ def shop():
                 myv = pg.transform.scale(myv, (75, 75))
                 TM = pg.transform.scale(TM, (30, 30))
                 jikan = round(time.time()-aiueo)
+                m.mus.stop()
                 return
             cursor = False
         else:
@@ -467,8 +483,6 @@ story(False)
 reset()
 shop()
 reset()
-pg.mixer.Sound("shootingBGM.wav").play(-1)
-pg.mixer.Sound("宇宙ノイズ.wav").play(-1)
 mx = 0
 my = 0
 gameover = pg.image.load("gameover.png")
@@ -499,7 +513,10 @@ aiueo = jikan
 fafafa = 0
 #メインループ
 def main():
-    global jiki, screen, fafafa, kabe, val, tmk, kf, hour, minute, second, jikan, jikan2, bkhrect, zanki, mtk, starb, star, myrect, cooltime, tekitama, tama, tamax, tamay, teki, tekix, tekiy, tekiugoku, b, tmx, tmy, random, hindo, tx, tekiflag, bkx, bky, bkh, taositakazu, tekitamash, tekish, f5, f5flag
+    m.mus.start("shootingBGM.wav", -1)
+    f3_p = True
+    fps = 30
+    global task, jiki, screen, fafafa, kabe, val, tmk, kf, hour, minute, second, jikan, jikan2, bkhrect, zanki, mtk, starb, star, myrect, cooltime, tekitama, tama, tamax, tamay, teki, tekix, tekiy, tekiugoku, b, tmx, tmy, random, hindo, tx, tekiflag, bkx, bky, bkh, taositakazu, tekitamash, tekish, f5, f5flag
     while True:
         screen.fill("DARKBLUE")
         with open("種類.pickle", mode="rb") as l:
@@ -523,7 +540,7 @@ def main():
             del star[myrect.collidelist(star)]
         if not mtk <= 0:
             mtk -= 2
-        if taositakazu >= 250:
+        if taositakazu >= task:
             with open('highscore.pickle', mode='rb') as l:
                 f = pickle.load(l)
                 if int(f[0]) * 3600 + (int(f[1])+int(f[2])) * 60 + int(f[3]) >= hour * 3600 + minute * 60 + second:
@@ -812,7 +829,7 @@ def main():
             pg.mixer.Sound("爆発.wav").play()
             tmk.x = rm.randint(0, 1545)
             tmk.y = rm.randint(-10000, -500)
-        suuji(30, 30, ("250/"+str(taositakazu)))
+        suuji(30, 30, (str(task)+"/"+str(taositakazu)))
         suuji(50, 730, ("残機:"+str(zanki)))
         with open("highscore.pickle", mode="rb") as l:
             f = pickle.load(l)
