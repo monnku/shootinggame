@@ -7,6 +7,8 @@ with open("所持自機.pickle", mode="wb") as l:
     pickle.dump(["なし"], l)
 with open("種類.pickle", mode="wb") as l:
     pickle.dump("なし", l)
+with open('highscore.pickle', mode='wb') as l:
+    pickle.dump(('1', '0', '0', '0'), l)
 """
 apg = pg.image.load("アプリ自機.png")
 pg.display.set_icon(apg)
