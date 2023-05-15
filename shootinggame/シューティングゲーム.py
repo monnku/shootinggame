@@ -131,9 +131,7 @@ def story(key):
     global f3_p, screen
     m.mus.start("BGM (1).wav", -1)
     pg.mouse.set_cursor(pg.SYSTEM_CURSOR_ARROW)
-    moji = ["ここは2200年の日本。(左右キーで進む/戻る)", "「ワ―!」「逃げろー!」「UFOの襲来だー!!」", "UFOが攻めてきてパニックの中,", "1人の人間が立ち上がった。", "このロケットを操縦して，UFO達を追撃しよう!", "操作方法...移動 矢印キー", "射撃 スペースキー", "(ロケットを手に入れている場合)壁を作る Vキー", "アイテム...流れ星 一定時間無敵，弾速UP", "ダイナマイト 爆発し，その時にある敵の弾をなくす", "救急箱 残機を1増やす", "↑のUFO...弾速 ★☆☆☆☆ 速さ ★☆☆☆☆ 弾威力 ★☆☆☆☆", "↑のUFO...弾速 ★★☆☆☆ 速さ ★★★☆☆ 弾威力 ★★☆☆☆", "↑のUFO...弾速 ★★★☆☆ 速さ ★★★☆☆ 弾威力 ★★★☆☆", "↑のUFO...弾速 ★★★★☆ 速さ ★★★★☆ 弾威力 ★★☆☆☆", "では,,,スタート!"]
-    if key:
-        moji = ["移動 矢印キー", "射撃 スペースキー", "start!"]
+    moji = ["ここは2200年のアメリカ。", "「UFOの襲来だー！」", "「逃げろー！」", "人々が逃げ惑う中、1人の人間が立ち上がった。", "このロケットを操縦し、UFOを撃ち落とせ!", "遊び方:移動...矢印キー", "撃つ...スペースキー", "(ロケットがあれば)壁を作る...Vキー", "アイテム:流れ星...一定時間無敵+弾速アップ", "ダイナマイト...敵の弾を爆発させて消滅させる", "救急箱...残機が1増える", "上のUFO...弾速:★☆☆☆☆、スピード:★☆☆☆☆、弾威力:★☆☆☆☆", "上のUFO...弾速:★★☆☆☆、スピード:★★★☆☆、弾威力:★★☆☆☆", "上のUFO...弾速:★★★☆☆、スピード:★★★☆☆、弾威力:★★★☆☆", "上のUFO...弾速:★★★★☆、スピード:★★★★☆、弾威力:★★☆☆☆", "では...start!"]
     b = 0
     font = pg.font.Font("dot.ttf", 30)
     flag = True
@@ -161,19 +159,19 @@ def story(key):
         if b >= len(moji):
             m.mus.stop()
             return
-        if b == 7:
+        if b == 8:
             screen.blit(ngrbosi, pg.Rect(720, 110, 200, 200))
-        elif b == 8:
-            screen.blit(dinamite, pg.Rect(672.5, 130, 200, 200))
         elif b == 9:
-            screen.blit(kyuukyuu, pg.Rect(672.5, 110, 200, 200))
+            screen.blit(dinamite, pg.Rect(672.5, 130, 200, 200))
         elif b == 10:
-            screen.blit(ufosa, pg.Rect(672.5, 110, 200, 200))
+            screen.blit(kyuukyuu, pg.Rect(672.5, 110, 200, 200))
         elif b == 11:
-            screen.blit(ufosb, pg.Rect(672.5, 110, 200, 200))
+            screen.blit(ufosa, pg.Rect(672.5, 110, 200, 200))
         elif b == 12:
-            screen.blit(ufosc, pg.Rect(672.5, 110, 200, 200))
+            screen.blit(ufosb, pg.Rect(672.5, 110, 200, 200))
         elif b == 13:
+            screen.blit(ufosc, pg.Rect(672.5, 110, 200, 200))
+        elif b == 14:
             screen.blit(ufosd, pg.Rect(672.5, 110, 200, 200))
         elif b >= 4:
             screen.blit(st2, pg.Rect(667.5, 105, 200, 200))
